@@ -51,3 +51,10 @@ class Auth:
         pwd_hash = _hash_password(password)
         user = self._db.add_user(email, pwd_hash)
         return user
+
+    def valid_login(self, email, password):
+        """Check if a user exists in the database and if the provided"""
+        if email in self._users:
+            pwd_hash = self._users[email]
+            return bcrypt.checkpw(password.encode(), pwd_hash)
+        return False
