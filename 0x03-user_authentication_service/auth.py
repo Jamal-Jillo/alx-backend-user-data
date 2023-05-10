@@ -54,7 +54,14 @@ class Auth:
 
     def valid_login(self, email, password):
         """Check if a user exists in the database and if the provided"""
-        if email in self._users:
-            pwd_hash = self._users[email]
-            return bcrypt.checkpw(password.encode(), pwd_hash)
+        user = None
+        try:
+            user = self._db.find_user_by(email=email)
+            if user is not None:
+                return bcrypt.checkpw(
+                    password.encode("utf-8"),
+                    user.hashed_password,
+                )
+        except NoResultFound:
+            return False
         return False
