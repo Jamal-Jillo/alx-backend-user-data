@@ -53,8 +53,6 @@ def logout():
 @app.route("/profile", methods=["GET"], strict_slashes=False)
 def profile() -> str:
     """GET /profile
-    Return:
-        - The user's profile information.
     """
     session_id = request.cookies.get("session_id")
     user = AUTH.get_user_from_session_id(session_id)
@@ -66,8 +64,6 @@ def profile() -> str:
 @app.route("/reset_password", methods=["POST"], strict_slashes=False)
 def get_reset_password_token() -> str:
     """POST /reset_password
-    Return:
-        - The user's password reset payload.
     """
     email = request.form.get("email")
     reset_token = None
@@ -83,9 +79,6 @@ def get_reset_password_token() -> str:
 @app.route("/reset_password", methods=["PUT"], strict_slashes=False)
 def update_password() -> str:
     """PUT /reset_password
-
-    Return:
-        - The user's password updated payload.
     """
     email = request.form.get("email")
     reset_token = request.form.get("reset_token")
