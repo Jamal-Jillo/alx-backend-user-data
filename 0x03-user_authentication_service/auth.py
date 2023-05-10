@@ -71,3 +71,24 @@ class Auth:
         except NoResultFound:
             return False
         return False
+
+    def create_session(self, email: str) -> Union[str, None]:
+        """Create a new session ID for the user with the given email.
+
+        Args:
+            email (str): The email of the user to create a session for.
+
+        Returns:
+            str: The newly created session ID as a string.
+            None: If no user was found with the given email.
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+        except NoResultFound:
+            return None
+
+        session_id = _generate_uuid()
+        user.session_id = session_id
+        self._db.commit()
+
+        return session_id
